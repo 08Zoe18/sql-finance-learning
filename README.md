@@ -22,3 +22,7 @@
   - 掌握 SQL 基础查询语法
   - 学会用 Workbench 执行和调试 SQL
   - 整理出可复用的模板文件
+  - ## Day 3（2026.03.07）
+- 学习内容：复杂销售数据多维分析（按产品类别、区域、客户类型等）
+- 练习文件：[day3_sales_analysis.sql](./Day3_复习/day3_sales_analysis.sql)
+- 收获：掌握 GROUP BY、HAVING、CASE 等语法，能独立完成财务常用查询。

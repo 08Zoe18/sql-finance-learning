@@ -26,3 +26,27 @@
 - 学习内容：复杂销售数据多维分析（按产品类别、区域、客户类型等）
 - 练习文件：[day3_sales_analysis.sql](./Day3_复习/day3_sales_analysis.sql)
 - 收获：掌握 GROUP BY、HAVING、CASE 等语法，能独立完成财务常用查询。
+## Day 4（2026.03.08）
+- **学习内容**：多表连接（INNER JOIN、LEFT JOIN）、子查询（标量/相关）、视图
+- **练习文件**：[day4_join_subquery.sql](./Day4/day4_join_subquery.sql)
+- **核心收获**：
+  - 理解 INNER JOIN 和 LEFT JOIN 的区别，能通过连接合并多张表获取完整信息
+  - 掌握子查询的两种形式：标量子查询（返回单个值）和相关子查询（内外层关联）
+  - 学会创建视图，将常用查询保存为虚拟表，简化后续操作
+- **示例代码概览**：
+  ```sql
+  -- INNER JOIN 计算毛利
+  SELECT s.*, p.单位成本, (s.单价 - p.单位成本) AS 单位毛利
+  FROM sales s INNER JOIN products p ON s.产品名称 = p.产品名称;
+
+  -- LEFT JOIN 检查数据缺失
+  SELECT s.产品名称, p.供应商 FROM sales s LEFT JOIN products p ON s.产品名称 = p.产品名称;
+
+  -- 子查询：高于平均值的记录
+  SELECT * FROM sales WHERE 金额 > (SELECT AVG(金额) FROM sales);
+
+  -- 相关子查询：每个类别最高金额
+  SELECT * FROM sales s1 WHERE 金额 = (SELECT MAX(金额) FROM sales s2 WHERE s2.产品类别 = s1.产品类别);
+
+  -- 创建视图
+  CREATE VIEW 销售毛利视图 AS SELECT ...;

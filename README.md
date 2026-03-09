@@ -50,3 +50,7 @@
 
   -- 创建视图
   CREATE VIEW 销售毛利视图 AS SELECT ...;
+  ## Day 5（2026.03.09）
+- 学习内容：窗口函数（ROW_NUMBER、RANK、DENSE_RANK、SUM OVER、AVG OVER、LAG）
+- 练习文件：[day5_window_functions.sql](./Day5/day5_window_functions.sql)
+- 核心收获：掌握排名、累计、移动平均、环比的计算方法，能进行更深入的财务数据分析

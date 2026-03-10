@@ -54,3 +54,39 @@
 - 学习内容：窗口函数（ROW_NUMBER、RANK、DENSE_RANK、SUM OVER、AVG OVER、LAG）
 - 练习文件：[day5_window_functions.sql](./Day5/day5_window_functions.sql)
 - 核心收获：掌握排名、累计、移动平均、环比的计算方法，能进行更深入的财务数据分析
+- ## Day 6（2026.03.10）
+- **学习内容**：窗口函数进阶应用（分组内排名、累计求和、移动平均、环比同比、占比分析、帕累托分析）
+- **练习文件**：[day6_window_functions_advanced.sql](./Day6/day6_window_functions_advanced.sql)
+- **核心收获**：
+  - 掌握在窗口函数中使用 PARTITION BY 进行分组内排名，找出各区域销售冠军
+  - 学会用 LAG 计算环比和同比增长率，分析业务趋势
+  - 能够计算累积占比（帕累托分析），识别贡献80%收入的少数关键产品
+  - 综合运用 CTE 和窗口函数解决复杂财务分析问题（如销售员业绩排名前三的月份）
+- **示例代码概览**：
+  ```sql
+  -- 分组内排名：各区域销售额最高的产品
+  WITH 区域排名 AS (
+      SELECT 销售区域, 产品名称, 金额,
+             ROW_NUMBER() OVER (PARTITION BY 销售区域 ORDER BY 金额 DESC) AS 排名
+      FROM sales
+  )
+  SELECT * FROM 区域排名 WHERE 排名 = 1;
+
+  -- 环比计算：本月 vs 上月销售额
+  SELECT 日期, 金额,
+         LAG(金额,1) OVER (ORDER BY 日期) AS 上月金额,
+         (金额 - LAG(金额,1) OVER (ORDER BY 日期)) / LAG(金额,1) OVER (ORDER BY 日期) * 100 AS 环比增长率
+  FROM sales;
+
+  -- 帕累托分析：产品类别销售额累计占比
+  WITH 类别汇总 AS (
+      SELECT 产品类别, SUM(金额) AS 类别销售额
+      FROM sales GROUP BY 产品类别
+  ), 排序 AS (
+      SELECT 产品类别, 类别销售额,
+             SUM(类别销售额) OVER (ORDER BY 类别销售额 DESC) AS 累计销售额,
+             SUM(类别销售额) OVER () AS 总销售额
+      FROM 类别汇总
+  )
+  SELECT 产品类别, 类别销售额, 累计销售额 / 总销售额 AS 累计占比
+  FROM 排序 ORDER BY 类别销售额 DESC;

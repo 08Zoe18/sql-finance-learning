@@ -50,7 +50,8 @@
 
   -- 创建视图
   CREATE VIEW 销售毛利视图 AS SELECT ...;
-  ## Day 5（2026.03.09）
+
+- ## Day 5（2026.03.09）
 - 学习内容：窗口函数（ROW_NUMBER、RANK、DENSE_RANK、SUM OVER、AVG OVER、LAG）
 - 练习文件：[day5_window_functions.sql](./Day5/day5_window_functions.sql)
 - 核心收获：掌握排名、累计、移动平均、环比的计算方法，能进行更深入的财务数据分析
@@ -90,3 +91,22 @@
   )
   SELECT 产品类别, 类别销售额, 累计销售额 / 总销售额 AS 累计占比
   FROM 排序 ORDER BY 类别销售额 DESC;
+## Day 7（2026.03.11）
+- **学习内容**：SQL 复杂查询优化（CTE、占比、同比环比、移动平均、索引）
+- **练习文件**：[day7_complex_queries.sql](./Day7/day7_complex_queries.sql)
+- **核心收获**：
+  - 掌握使用 CTE 进行多步分析，计算销售额占比和累计占比（帕累托分析）
+  - 学会用窗口函数计算环比、同比和移动平均，深入分析业务趋势
+  - 理解索引对查询性能的影响，并学会查看执行计划
+  - 能够在财务分析中综合运用窗口函数和 CTE 解决复杂问题
+- **示例代码概览**：
+  ```sql
+  -- 计算类别销售额占比及累计占比
+  WITH category_sales AS (...), total_sales AS (...)
+  SELECT ..., SUM(销售额) OVER (ORDER BY 销售额 DESC) / 总销售额 AS 累计占比
+  FROM ...
+
+  -- 计算环比和同比
+  SELECT ..., LAG(月销售额,1) OVER() AS 上月,
+         (月销售额 - 上月)/上月 AS 环比
+  FROM monthly_sales

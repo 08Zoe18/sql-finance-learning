@@ -105,6 +105,26 @@
   WITH category_sales AS (...), total_sales AS (...)
   SELECT ..., SUM(销售额) OVER (ORDER BY 销售额 DESC) / 总销售额 AS 累计占比
   FROM ...
+## Day 8（2026.03.12）
+- **学习内容**：SQL 财务高级分析（CASE 条件聚合、累计值、占比、临时表、查询优化）
+- **练习文件**：[day8_financial_analysis.sql](./Day8/day8_financial_analysis.sql)
+- **核心收获**：
+  - 掌握使用 CASE 进行条件聚合，灵活处理财务数据分类
+  - 学会用窗口函数计算累计收入、累计利润等关键指标
+  - 能够计算各产品/类别的销售额占比，分析贡献度
+  - 理解临时表的用法，简化复杂查询
+  - 了解索引和执行计划，初步掌握查询优化技巧
+- **示例代码概览**：
+  ```sql
+  -- 累计利润
+  SELECT 月份, 利润, SUM(利润) OVER (ORDER BY 月份) AS 累计利润 FROM monthly_profit;
+
+  -- 产品占比
+  WITH monthly_total AS (...)
+  SELECT 产品名称, 销售额 / 月总销售额 AS 占比 FROM ...
+
+  -- 环比增长率
+  SELECT 利润, LAG(利润) OVER() AS 上月利润, (利润 - 上月利润)/上月利润 AS 环比 FROM ...
 
   -- 计算环比和同比
   SELECT ..., LAG(月销售额,1) OVER() AS 上月,
